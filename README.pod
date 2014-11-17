@@ -1,6 +1,9 @@
 =head2 Benchmark::FullText::Search
 
+Benchmarking apache lucy vs elastic search
+
 =head2 SYNOPSIS
+
     use ContentGenerator;
     use DDP;
 
