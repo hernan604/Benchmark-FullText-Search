@@ -1,0 +1,16 @@
+use Test::More;
+use Tie::File;
+use Fcntl 'O_RDONLY';
+use ApacheLucy::Indexer;
+use ApacheLucy::Searcher;
+use DDP;
+my $filename = 'file';
+tie my @lines, 'Tie::File', $filename, mode => O_RDONLY or die 'Could not open filename';
+my $lucy_indexer = ApacheLucy::Indexer->new;
+$lucy_indexer->start_fresh;
+$lucy_indexer->index( \@lines );
+my @expected_hits = grep { /orange|project/ig } @lines;
+my $lucy_searcher = ApacheLucy::Searcher->new;
+my $res = $lucy_searcher->search('orange OR project');
+ok( $res->total_hits == @expected_hits, 'search correct' );
+done_testing;
